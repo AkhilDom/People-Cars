@@ -59,10 +59,10 @@ function App() {;
               }}
             >
               <h1 style={{ color: "red" }}>
-                Whoa! You are caught trying to enter restricted area.
+              You are caught trying to enter restricted area.
               </h1>
               <Link to="/" >
-                Please return to your home page as soon as possible!!!
+                Please return to your home page
               </Link>
             </div>}
           ></Route>

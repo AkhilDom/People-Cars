@@ -4,49 +4,47 @@ import ListItems from "./ListItems";
 import { Delete } from "@mui/icons-material";
 import { useMutation, useQuery } from "@apollo/client";
 import { filter } from "lodash";
-import {gql} from '@apollo/client'
+import { gql } from "@apollo/client";
 
-  const CarList = ({ data }) => {
-  console.log(data)
-  const cars=useQuery(GET_CARS)
+const CarList = ({ data }) => {
+  console.log(data);
+  const cars = useQuery(GET_CARS);
   const [removeCar] = useMutation(REMOVE_CAR, {
-
-      update(cache, {data}) {
-        const { car } = cache.readQuery({ query: GET_CARS });
-        cache.writeQuery({
-          query: GET_CARS,
-          data: {
-            car: filter(car, c => {
-              return c.id !== data.removeCar.id
-            })
-          }
-        })
-      }
+    update(cache, { data }) {
+      const { car } = cache.readQuery({ query: GET_CARS });
+      cache.writeQuery({
+        query: GET_CARS,
+        data: {
+          car: filter(car, (c) => {
+            return c.id !== data.removeCar.id;
+          }),
+        },
+      });
+    },
   });
   const handleDelete = (e, d) => {
-    const {id,make,model,price,personId,year}=d
-    const a=removeCar({
+    const { id, make, model, price, personId, year } = d;
+    const a = removeCar({
       variables: {
-        id
+        id,
       },
       optimisticResponse: {
-        __typename: 'Mutation',
+        __typename: "Mutation",
         removeCar: {
-          __typename: 'Car',
+          __typename: "Car",
           id,
           make,
           model,
           year,
           price,
-          personId
-        }
-      }
-    })  
-    
+          personId,
+        },
+      },
+    });
   };
   return (
     <>
-      {data.cars.map((d,i) => {
+      {data.cars.map((d, i) => {
         return (
           <>
             <ListItems
@@ -54,37 +52,37 @@ import {gql} from '@apollo/client'
               last={false}
               dat={d}
               type={"year"}
-              key={d.year+d.id+i}
+              key={d.year + d.id + i}
             />
             <ListItems
               item={d.make}
               last={false}
               dat={d}
               type={"make"}
-              key={d.make+d.id+i}
+              key={d.make + d.id + i}
             />
             <ListItems
               item={d.model}
               last={false}
               dat={d}
               type={"model"}
-              key={d.model+d.id+i}
+              key={d.model + d.id + i}
             />
             <ListItems
               item={d.price}
               last={false}
               dat={d}
               type={"price"}
-              key={d.price+d.id+i}
+              key={d.price + d.id + i}
             />
             <ListItems
               item={d.personId}
               last={false}
               dat={d}
               type={"personId"}
-              key={d.personId+d.id+i}
+              key={d.personId + d.id + i}
             />
-            <IconButton key={d.id+i} onClick={(e) => handleDelete(e, d)}>
+            <IconButton key={d.id + i} onClick={(e) => handleDelete(e, d)}>
               <Delete />
             </IconButton>
             <Divider />
